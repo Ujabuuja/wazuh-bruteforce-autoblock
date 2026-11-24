@@ -1,0 +1,12 @@
+<!-- Optional: append to /var/ossec/etc/ossec.conf on the Wazuh manager.
+     Replace the hook_url with your own Slack Incoming Webhook URL
+     (never commit a real webhook URL), then restart wazuh-manager.
+     5763 = brute force detected, 651 = host blocked by active response. -->
+<ossec_config>
+  <integration>
+    <name>slack</name>
+    <hook_url>https://hooks.slack.com/services/XXX/YYY/ZZZ</hook_url>
+    <rule_id>5763,651</rule_id>
+    <alert_format>json</alert_format>
+  </integration>
+</ossec_config>
