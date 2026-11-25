@@ -145,7 +145,7 @@ Auto-blocking is powerful but can lock out legitimate users. In production I wou
 - [x] `ossec.conf` active-response block
 - [x] "After": Hydra slowed and stuck on `[RE-ATTEMPT]`; rule 651 "Host Blocked" logged
 - [x] Slack messages for 5763 and 651 in `#soc-alerts`
-- [ ] MITRE ATT&CK dashboard view showing T1110
+- [x] MITRE ATT&CK views showing T1110 (Brute Force) and T1110.001 (Password Guessing)
 
 ---
 
@@ -176,3 +176,11 @@ Auto-blocking is powerful but can lock out legitimate users. In production I wou
 **Dashboard overview after the tests**
 
 ![Wazuh dashboard overview](Screenshot%202026-11-24%20193424.png)
+
+**MITRE ATT&CK dashboard:** alerts over time, with Credential Access as the top tactic
+
+![MITRE ATT&CK dashboard](Screenshot%202026-11-24%20193958.png)
+
+**MITRE ATT&CK framework view:** T1110.001 Password Guessing (159 hits), T1021.004 SSH (121), T1110 Brute Force (28)
+
+![MITRE ATT&CK framework view](Screenshot%202026-11-24%20194749.png)
