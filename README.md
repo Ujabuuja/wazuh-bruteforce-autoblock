@@ -146,3 +146,33 @@ Auto-blocking is powerful but can lock out legitimate users. In production I wou
 - [x] "After": Hydra slowed and stuck on `[RE-ATTEMPT]`; rule 651 "Host Blocked" logged
 - [x] Slack messages for 5763 and 651 in `#soc-alerts`
 - [ ] MITRE ATT&CK dashboard view showing T1110
+
+---
+
+## Evidence screenshots
+
+**Agent connected** (dashboard and `agent_control`)
+
+![Dashboard: agent Active](01-dashboard-agent-active.jpg)
+
+![agent_control: victim-ubuntu Active](02-agent-control-active.jpg)
+
+**Before auto-block:** Hydra runs all 50 passwords unopposed
+
+![Hydra before the block](03-hydra-before-no-block.jpg)
+
+**Detection:** rule 5763, level 10, MITRE T1110
+
+![Rule 5763 alert details](04-rule-5763-details-T1110.jpg)
+
+**After auto-block:** Hydra stuck on `[RE-ATTEMPT]`
+
+![Hydra after the block](06-hydra-after-reattempt.jpg)
+
+**Containment:** rule 5763 followed by rule 651 "Host Blocked" in the same second
+
+![alerts.log 5763 then 651](07-alerts-5763-then-651.jpg)
+
+**Dashboard overview after the tests**
+
+![Wazuh dashboard overview](Screenshot%202026-11-24%20193424.png)
