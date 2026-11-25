@@ -13,6 +13,7 @@ A home-lab SOC use case in which an SSH brute-force attack is **detected, mapped
 | Hydra attack rate against `labuser` | ~50 tries/min, all 50 passwords tried freely | dropped to **8 tries/min**, with Hydra stuck on `[RE-ATTEMPT]` |
 | Wazuh response | Rule 5763 alert only | Rule **5763** (detection), then rule **651** "Host Blocked by firewall-drop Active Response" |
 | Detection-to-block time | n/a (no response) | **Same second**: both rules logged at 22:09:38 UTC on the Wazuh server clock |
+| Analyst notification | none | Slack `#soc-alerts` got the 5763 alert (00:26:04 UTC) and the 651 "Host Blocked" alert (00:26:05 UTC), 1 second apart |
 
 The block lasts 180 seconds and then lifts automatically. Hydra speeds back up when it ends, which shows the timeout is working.
 
@@ -66,7 +67,7 @@ All three VMs sit on one isolated VirtualBox NAT Network, `SOC-Lab` (10.0.2.0/24
 
 The `firewall-drop` `<command>` ships with Wazuh by default. Restart afterwards with `sudo systemctl restart wazuh-manager`.
 
-### Slack notification (optional add-on)
+### Slack notification
 
 ```xml
 <ossec_config>
@@ -116,6 +117,7 @@ hydra -t 4 -l labuser -P lab-pass.txt -V ssh://10.0.2.4
 
 | Problem | Root cause | Fix |
 |---|---|---|
+| Slack integration posted nothing; `integrations.log` showed "Invalid URL ''" | The `<hook_url>` was written empty | Re-inserted the webhook URL and restarted the manager |
 | Wazuh install failed with "No space left on device" | Ubuntu's installer allocated only 24 GB of the 50 GB disk to the root LV | Extended the LV with `lvextend` and resized the filesystem |
 | Reinstall failed: "manager package could not be removed" | dpkg left broken by the disk-full failure | Force-purged the package, removed `/var/ossec`, clean reinstall |
 | Installer hung for 35+ min; kernel soft-lockup messages | A pre-installed **MicroK8s** snap was starving the VM's CPU | `snap stop --disable microk8s`, then a clean install |
@@ -142,5 +144,5 @@ Auto-blocking is powerful but can lock out legitimate users. In production I wou
 - [x] "Before": Hydra running freely and rule 5763 alert (level 10, T1110)
 - [x] `ossec.conf` active-response block
 - [x] "After": Hydra slowed and stuck on `[RE-ATTEMPT]`; rule 651 "Host Blocked" logged
-- [ ] Slack messages for 5763 and 651 (pending the webhook)
+- [x] Slack messages for 5763 and 651 in `#soc-alerts`
 - [ ] MITRE ATT&CK dashboard view showing T1110
